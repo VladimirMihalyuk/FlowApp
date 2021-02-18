@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/topHeadlinesNewsFragment">
+
+    <fragment
+        android:id="@+id/topHeadlinesNewsFragment"
+        android:name="com.example.news.app.topheadlinesnews.TopHeadlineNewsFragment"
+        android:label="fragment_popular_movies"
+        tools:layout="@layout/fragment_topheadlines_news" >
+        <action
+            android:id="@+id/action_topHeadlinesNewsFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.news.app.search.SearchFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_search" >
+
+        <action
+            android:id="@+id/action_searchFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/choseCategoryFragment"
+        android:name="com.example.news.app.choosecategory.ChoseCategoryFragment"
+        android:label="fragment_blank2"
+        tools:layout="@layout/fragment_chose_category" >
+        <action
+            android:id="@+id/action_choseCategoryFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.example.news.app.newsdetails.NewsFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" >
+        <argument
+            android:name="url"
+            app:argType="string" />
+        <argument
+            android:name="author"
+            app:argType="string" />
+    </fragment>
+</navigation>
