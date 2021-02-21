@@ -2,6 +2,7 @@ package com.example.news.app.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         searchViewModel.listOfNews.observe(viewLifecycleOwner) {
             searchAdapter.submitList(it)
+            progressBar.isVisible = false
+            list.isVisible = true
         }
 
         editTextTextPersonName

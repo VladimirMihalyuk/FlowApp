@@ -22,12 +22,21 @@ class ChoseCategoryViewModel(
     val listOfNews: LiveData<List<ChoseCategoryPresentationModel>>
         get() = _listOfNews
 
+    private val _isLoading = MutableSharedFlow<Boolean>()
+    val isLoading: SharedFlow<Boolean>
+        get() = _isLoading
+
     init {
         chosenCategory
             .distinctUntilChanged()
             .onEach {
                 viewModelScope.launch(Dispatchers.IO) {
-                    _listOfNews.postValue(converter.convertChoseCategoryRepositoryModelToPresentation(newsRepository.getByCategory(it)))
+                    try {
+                        _isLoading.emit(true)
+                        _listOfNews.postValue(converter.convertChoseCategoryRepositoryModelToPresentation(newsRepository.getByCategory(it)))
+                    } catch (e: Exception) {
+
+                    }
                 }
             }
             .launchIn(viewModelScope)

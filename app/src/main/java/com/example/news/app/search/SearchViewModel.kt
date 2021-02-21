@@ -30,12 +30,16 @@ class SearchViewModel(
 
     fun searchByString(searchString: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _listOfNews.postValue(
-                converter.convertSearchRepositoryModelToPresentation(
-                    newsRepository.getByQueryString(searchString
+            try {
+                _listOfNews.postValue(
+                    converter.convertSearchRepositoryModelToPresentation(
+                        newsRepository.getByQueryString(searchString
+                        )
                     )
                 )
-            )
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
         }
     }
 }

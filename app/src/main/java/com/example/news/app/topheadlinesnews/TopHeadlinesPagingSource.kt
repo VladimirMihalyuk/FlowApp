@@ -11,12 +11,18 @@ class TopHeadlinesPagingSource(
     val dataModelsConverter: DataModelsConverter
     ) : PagingSource<Int, TopHeadlineNewsPresentationModel>() {
 
+    private var listener: (suspend () -> Unit)? = null
+    fun setListener(listener: suspend () -> Unit) {
+        this.listener = listener
+    }
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TopHeadlineNewsPresentationModel> {
         try {
             return withContext(Dispatchers.IO) {
                 val nextPage = params.key ?: 1
                 val response = dataModelsConverter.convertRepositoryModelToPresentation(newsRepository.getTopHeadlinesNews(nextPage))
 
+                listener?.invoke()
                 return@withContext LoadResult.Page(
                         data = response,
                         prevKey = if (nextPage == 1) null else nextPage - 1,
@@ -27,4 +33,6 @@ class TopHeadlinesPagingSource(
             return LoadResult.Error(e)
         }
     }
+
+
 }

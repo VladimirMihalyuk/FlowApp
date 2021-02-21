@@ -8,8 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.R
 import kotlinx.android.synthetic.main.fragment_topheadlines_news.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -28,10 +28,19 @@ class TopHeadlineNewsFragment : Fragment(R.layout.fragment_topheadlines_news) {
             adapter = headlineAdapter
         }
 
-        lifecycleScope.launch {
-            topHeadlineNewsViewModel.movies.collectLatest {
+        lifecycleScope.launchWhenStarted {
+            topHeadlineNewsViewModel.news.collectLatest {
                 headlineAdapter.submitData(it)
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            topHeadlineNewsViewModel.isLoading.collect {
+                if(!it) {
+                    progressBar.visibility = View.GONE
+                }
+            }
+        }
+
     }
 }
